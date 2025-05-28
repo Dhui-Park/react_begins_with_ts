@@ -1,24 +1,7 @@
-import { useState } from "react";
+import Router from "./Router";
 
 function App() {
-  const [value, setValue] = useState("");
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value } } = event;
-    setValue(value);
-  };
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("hello " + value);
-  };
-
-  return (
-    <div>
-      <form onSubmit={onSubmit}>
-         <input type="text" placeholder="username" onChange={onChange} />
-         <button>Login</button>
-      </form>
-    </div>
-  );
+  return <Router />
 }
 
-export default App;  
+export default App;
