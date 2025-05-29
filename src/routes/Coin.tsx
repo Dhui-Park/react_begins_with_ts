@@ -13,6 +13,31 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 30px;
+`;
+
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+
+const OverViewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span:first-child {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+`;
+
+const Description = styled.p`
+  margin: 20px 0px
 `;
 
 const Title = styled.h1`
@@ -104,16 +129,45 @@ function Coin() {
 
             setInfo(infoData);
             setPriceInfo(priceData);
+            setLoading(false);
         })();
     }, [coinId]);
     
     return <Container>
     <Header>
-        <Title>{state?.name || "Loading"}</Title>
+        <Title>{state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
     </Header>
     {loading ? (
         <Loader>Loading...</Loader>
-    ) : priceInfo?.quotes.USD.price }
+    ) : (
+        <>
+          <Overview>
+            <OverViewItem>
+                <span>Rank:</span>
+                <span>{info?.rank}</span>
+            </OverViewItem>
+            <OverViewItem>
+                <span>Symbol:</span>
+                <span>{info?.symbol}</span>
+            </OverViewItem>
+            <OverViewItem>
+                <span>Open Source:</span>
+                <span>{info?.open_source ? "Yes" : "No"}</span>
+            </OverViewItem>
+          </Overview>
+          <Description>{info?.description}</Description>
+          <Overview>
+            <OverViewItem>
+                <span>Total Supply:</span>
+                <span>{priceInfo?.total_supply.toLocaleString()}</span>
+            </OverViewItem>
+            <OverViewItem>
+                <span>Max Supply:</span>
+                <span>{priceInfo?.max_supply.toLocaleString()}</span>
+            </OverViewItem>
+          </Overview>
+        </>
+    ) }
 </Container>;
 }
 
