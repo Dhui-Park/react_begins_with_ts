@@ -13,4 +13,3 @@ root.render(
     </ThemeProvider>
   </div>
 );
-
