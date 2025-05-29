@@ -27,8 +27,9 @@ const Coin = styled.li`
   border-radius: 15px;
   a {
     transition: color 0.2s ease-in;
-    display: block; 
+    display: flex; 
     padding: 20px;
+    align-items: center;
   }
   &:hover {
     a {
@@ -48,6 +49,11 @@ const Loader = styled.span`
   margin-top: 30px;
 `;
 
+const Img = styled.img`
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+`;
 
 interface CoinInterface {
     id: string,
@@ -71,18 +77,36 @@ function Coins() {
         })();
     }, []);
     console.log(coins)
-    return <Container>
-        <Header>
-            <Title>Coins</Title>
-        </Header>
-        {loading ? <Loader>Loading...</Loader> : <CoinsList>
-            {coins.map(coin => <Coin key={coin.id}>
-                <Link to={`/${coin.id}`}> 
-                    {coin.name} &rarr;
-                </Link>
-            </Coin>)}
-        </CoinsList>}
-    </Container>
+    return (
+        <Container>
+            <Header>
+                <Title>Coins</Title>
+            </Header>
+            {loading ? (
+                <Loader>Loading...</Loader>
+            ) : (
+                <CoinsList>
+                    {coins.map((coin) => (
+                        <Coin key={coin.id}>
+                            <Link
+                                to={{
+                                    pathname: `/${coin.id}`,
+                                    state: {
+                                        name: coin.name,
+                                    },
+                                }}
+                            >
+                                <Img
+                                    src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
+                                />
+                                {coin.name} &rarr;
+                            </Link>
+                        </Coin>
+                    ))}
+                </CoinsList>
+            )}
+        </Container>
+    );
 }
 
 export default Coins;
