@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { Link, Route, Switch, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import Price from "./Price";
 import Chart from "./Chart";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -154,13 +154,17 @@ function Coin() {
     });
     const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>({
       queryKey: ["tickers", coinId], 
-      queryFn: () => fetchCoinTickers(coinId)
+      queryFn: () => fetchCoinTickers(coinId),
+      refetchInterval: 5000,
     });
     
     const loading = infoLoading || tickersLoading;
 
     
     return <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+      </Helmet>
     <Header>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
     </Header>
@@ -178,8 +182,8 @@ function Coin() {
                 <span>{infoData?.symbol}</span>
             </OverViewItem>
             <OverViewItem>
-                <span>Open Source:</span>
-                <span>{infoData?.open_source ? "Yes" : "No"}</span>
+                <span>Price:</span>
+                <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverViewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -213,6 +217,7 @@ function Coin() {
           </Switch>
         </>
     ) }
+    
 </Container>;
 }
 
