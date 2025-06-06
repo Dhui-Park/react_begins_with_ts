@@ -17,7 +17,23 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px;
+  padding: 30px 0px;
+  position: relative;
+`;
+
+const BackButton = styled.button`
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: ${props => props.theme.textColor};
+  font-size: 24px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const Overview = styled.div`
@@ -69,6 +85,7 @@ const Tab = styled.span<{isActive: boolean}>`
 const Title = styled.h1`
   font-size: 48px;
   color: ${props => props.theme.textColor};
+  text-align: center;
 `;
 
 const Loader = styled.span`
@@ -141,7 +158,11 @@ interface PriceData {
     };
 }
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
     // const [loading, setLoading] = useState(true);
     const { coinId } = useParams<RouteParams>();
     const { state } = useLocation<RouteState>();
@@ -165,9 +186,10 @@ function Coin() {
       <Helmet>
         <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
       </Helmet>
-    <Header>
+      <Header>
+        <BackButton onClick={() => window.history.back()}>Coins</BackButton>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
-    </Header>
+      </Header>
     {loading ? (
         <Loader>Loading...</Loader>
     ) : (
@@ -212,7 +234,7 @@ function Coin() {
                 <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-                <Chart coinId={coinId} />
+                <Chart coinId={coinId} isDark={isDark} />
             </Route>
           </Switch>
         </>

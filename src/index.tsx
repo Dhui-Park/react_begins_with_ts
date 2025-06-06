@@ -1,7 +1,5 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { theme } from './theme';
-import { ThemeProvider } from 'styled-components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -12,9 +10,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <div>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <App />
     </QueryClientProvider>
 
   </div>

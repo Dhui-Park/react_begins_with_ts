@@ -15,7 +15,10 @@ interface IHistorical {
 
 interface ChartProps {
     coinId: string;
+    isDark: boolean;
 }
+
+
 
 function formatUnixToDate(unixTimestamp: number) {
     const date = new Date(unixTimestamp * 1000);
@@ -25,7 +28,7 @@ function formatUnixToDate(unixTimestamp: number) {
     return `${year}-${month}-${day}`;
   }
 
-function Chart( { coinId }: ChartProps ) {
+function Chart( { coinId, isDark }: ChartProps ) {
     const {isLoading, data} = useQuery<IHistorical[]>({
         queryKey: ["ohlcv", coinId],
         queryFn: () => fetchCoinHistory(coinId),
@@ -40,7 +43,7 @@ function Chart( { coinId }: ChartProps ) {
                 }
             ]} options={{
                 theme: {
-                    mode: "dark",
+                    mode: isDark ? "dark" : "light",
                 }, 
                 chart: {
                     height: 300,
